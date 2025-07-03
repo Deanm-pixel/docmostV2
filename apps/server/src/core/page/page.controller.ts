@@ -40,6 +40,11 @@ export class PageController {
     private readonly spaceAbility: SpaceAbilityFactory,
   ) {}
 
+  @Post('filter')
+  async filterPages(@Body() filterDto: FilterPagesDto) {
+    return this.pageService.filterPages(filterDto);
+  }
+  
   @HttpCode(HttpStatus.OK)
   @Post('/info')
   async getPage(@Body() dto: PageInfoDto, @AuthUser() user: User) {
@@ -300,10 +305,6 @@ export class PageController {
       throw new ForbiddenException();
     }
     return this.pageService.getPageBreadCrumbs(page.id);
-
-  @Post('filter')
-  async filterPages(@Body() filterDto: FilterPagesDto) {
-    return this.pageService.filterPages(filterDto);
   }
 }
 
