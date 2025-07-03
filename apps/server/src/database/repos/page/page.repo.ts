@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 import { KyselyDB, KyselyTransaction } from '../../types/kysely.types';
+import { FilterPagesDto } from '../../../../core/page/dto/filter-pages.dto';
 import { dbOrTx } from '../../utils';
 import {
   InsertablePage,
@@ -22,6 +23,20 @@ export class PageRepo {
     private spaceMemberRepo: SpaceMemberRepo,
   ) {}
 
+  
+  async filterPages(filterDto: FilterPagesDto) {
+    let query = this.db.selectFrom('pages').selectAll();
+
+    if (filterDto.tags && filterDto.tags.length > 0) {
+      query = query.where('tags', '@>', filterDto.tags);
+    }
+    if (filterDto.creatorId) {
+      query = query.where('creatorId', '=', filterDto.creatorId);
+    }
+
+    return query.execute();
+  }
+  
   private baseFields: Array<keyof Page> = [
     'id',
     'slugId',
