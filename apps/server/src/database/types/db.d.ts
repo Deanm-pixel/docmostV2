@@ -204,6 +204,7 @@ export interface Pages {
   updatedAt: Generated<Timestamp>;
   workspaceId: string;
   ydoc: Buffer | null;
+  tags: string[];
 }
 
 export interface Shares {
