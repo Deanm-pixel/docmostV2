@@ -21,6 +21,7 @@ export interface IPage {
   creator: ICreator;
   lastUpdatedBy: ILastUpdatedBy;
   space: Partial<ISpace>;
+  tags: string[]; // <--- hinzugefügt
 }
 
 interface ICreator {
