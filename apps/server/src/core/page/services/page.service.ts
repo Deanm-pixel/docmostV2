@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreatePageDto } from '../dto/create-page.dto';
 import { UpdatePageDto } from '../dto/update-page.dto';
+import { FilterPagesDto } from '../dto/filter-pages.dto';
 import { PageRepo } from '@docmost/db/repos/page/page.repo';
 import { InsertablePage, Page, User } from '@docmost/db/types/entity.types';
 import { PaginationOptions } from '@docmost/db/pagination/pagination-options';
@@ -46,6 +47,10 @@ export class PageService {
     private readonly storageService: StorageService,
   ) {}
 
+  async filterPages(filterDto: FilterPagesDto) {
+    return this.pageRepo.filterPages(filterDto);
+  }
+  
   async findById(
     pageId: string,
     includeContent?: boolean,
