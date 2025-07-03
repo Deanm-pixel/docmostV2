@@ -2,33 +2,33 @@ import {
   Controller,
   Post,
   Body,
+  UseGuards,
   HttpCode,
   HttpStatus,
-  UseGuards,
-  ForbiddenException,
   NotFoundException,
+  ForbiddenException,
   BadRequestException,
 } from '@nestjs/common';
 import { PageService } from './services/page.service';
+import { PageRepo } from '@docmost/db/repos/page/page.repo';
+import { PageHistoryService } from './services/page-history.service';
+import { SpaceAbilityFactory } from '../casl/abilities/space-ability.factory';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AuthUser, AuthWorkspace } from '../auth/decorators';
+import { User, Workspace } from '@docmost/db/types/entity.types';
+import {
+  PageIdDto,
+  PageInfoDto,
+  PageHistoryIdDto,
+  SpaceIdDto,
+} from './dto/page.dto';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
-import { MovePageDto, MovePageToSpaceDto } from './dto/move-page.dto';
-import { PageHistoryIdDto, PageIdDto, PageInfoDto } from './dto/page.dto';
-import { PageHistoryService } from './services/page-history.service';
-import { AuthUser } from '../../common/decorators/auth-user.decorator';
-import { AuthWorkspace } from '../../common/decorators/auth-workspace.decorator';
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { PaginationOptions } from '@docmost/db/pagination/pagination-options';
-import { User, Workspace } from '@docmost/db/types/entity.types';
-import { SidebarPageDto } from './dto/sidebar-page.dto';
-import {
-  SpaceCaslAction,
-  SpaceCaslSubject,
-} from '../casl/interfaces/space-ability.type';
-import SpaceAbilityFactory from '../casl/abilities/space-ability.factory';
-import { PageRepo } from '@docmost/db/repos/page/page.repo';
 import { RecentPageDto } from './dto/recent-page.dto';
+import { MovePageDto } from './dto/move-page.dto';
 import { CopyPageToSpaceDto } from './dto/copy-page.dto';
+import { PaginationOptions } from '@docmost/db/pagination/pagination-options';
+import { FilterPagesDto } from './dto/filter-pages.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('pages')
@@ -300,5 +300,10 @@ export class PageController {
       throw new ForbiddenException();
     }
     return this.pageService.getPageBreadCrumbs(page.id);
+
+  @Post('filter')
+  async filterPages(@Body() filterDto: FilterPagesDto) {
+    return this.pageService.filterPages(filterDto);
   }
 }
+
