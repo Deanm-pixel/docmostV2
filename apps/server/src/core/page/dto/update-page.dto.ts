@@ -1,8 +1,28 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePageDto } from './create-page.dto';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString, IsArray } from 'class-validator';
 
-export class UpdatePageDto extends PartialType(CreatePageDto) {
+export class UpdatePageDto {
+  @IsOptional()
   @IsString()
-  pageId: string;
+  pageId?: string;
+
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  icon?: string;
+
+  @IsOptional()
+  @IsString()
+  coverPhoto?: string;
+
+  @IsOptional()
+  @IsString()
+  parentPageId?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  tags?: string[];
 }
