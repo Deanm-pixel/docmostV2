@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsArray } from 'class-validator';
 
 export class CreatePageDto {
   @IsOptional()
@@ -11,8 +11,18 @@ export class CreatePageDto {
 
   @IsOptional()
   @IsString()
+  coverPhoto?: string;
+
+  @IsOptional()
+  @IsString()
   parentPageId?: string;
 
-  @IsUUID()
-  spaceId: string;
+  @IsOptional()
+  @IsString()
+  spaceId?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  tags?: string[];
 }
